@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         max charges time
 // @namespace    https://github.com/mechanikate/wplace-charges-time
-// @version      1.2.1
+// @version      1.2.2
 // @description  adds a timer counting down to when you will have max charges above the Paint button for wplace
 // @license      MIT
 // @author       mechanikate
@@ -22,12 +22,14 @@
 let charges = 0;
 let maxCharges = 35;
 let chargesFullColoring = GM_getValue("color", true); // default coloring to true
-let showMax = GM_getValue("showmax", false); // don't show time until max charges by default
+let showMax = GM_getValue("showma
+x", false); // don't show time until max charges by default
 let coloringId, maxId;
 let updateQueued = false; // stopper to make sure we don't run like 20 charge data fetch requests at once
 const replaceNaN = (val, replacement) => isNaN(val) || val == null || val == undefined ? replacement : val;
 const valueMissing = (val, isNodeList=false) => typeof(val) == "undefined" || val == null || (isNodeList && val.length == 0);
 const rgbToHex = (r,g,b) => "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1); // from https://stackoverflow.com/a/5624139
+const toHHMMSS = seconds => `${Math.floor(seconds/3600)}:${(Math.floor(seconds/60)%60).toString().padStart(2,"0")}:${(seconds%60).toString().padStart(2,"0")}`; // convert seconds to HH:MM:SS
 const determineColor = fractionDone => rgbToHex(255*(1-fractionDone), 255*fractionDone, 0);
 function updateToggles() {
     if(coloringId) GM_unregisterMenuCommand(coloringId);
@@ -74,7 +76,7 @@ window.setInterval(() => { // just an interval because I don't feel like making 
     let remainingSeconds = (maxCharges-charges)*30+secondsLeftForCharge;
     let maxSeconds = maxCharges*30;
     let existingEle = document.getElementById("timeTillMaxCharges");
-    let toMaxStr = `(${new Date(remainingSeconds * 1000).toISOString().slice(11, 19)}${showMax ? "/"+new Date(maxSeconds * 1000).toISOString().slice(11, 19) : ""} to max)`;
+    let toMaxStr = `(${toHHMMSS(remainingSeconds)}${showMax ? "/"+toHHMMSS(maxSeconds) : ""} to max)`;
     if(typeof(existingEle) != "undefined" && existingEle != null) {
         existingEle.innerHTML = toMaxStr; // handle if our element alr exists
         if(chargesFullColoring) existingEle.style.color = determineColor(remainingSeconds/maxCharges/30);
