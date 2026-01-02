@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         max charges time
 // @namespace    https://github.com/mechanikate/wplace-charges-time
-// @version      1.2.2
+// @version      1.2.3
 // @description  adds a timer counting down to when you will have max charges above the Paint button for wplace
 // @license      MIT
 // @author       mechanikate
@@ -22,8 +22,7 @@
 let charges = 0;
 let maxCharges = 35;
 let chargesFullColoring = GM_getValue("color", true); // default coloring to true
-let showMax = GM_getValue("showma
-x", false); // don't show time until max charges by default
+let showMax = GM_getValue("showmax", false); // don't show time until max charges by default
 let coloringId, maxId;
 let updateQueued = false; // stopper to make sure we don't run like 20 charge data fetch requests at once
 const replaceNaN = (val, replacement) => isNaN(val) || val == null || val == undefined ? replacement : val;
@@ -62,7 +61,7 @@ unsafeWindow.updateChargeData=()=>{
     });
 };
 window.setInterval(() => { // just an interval because I don't feel like making this more complex
-    let plainChargeNode = document.querySelector(".btn.btn-primary.btn-lg.relative.z-30>.flex.items-center.gap-2>span>.w-7.text-xs");
+    let plainChargeNode = document.querySelector(".btn.btn-primary.btn-lg.relative.z-30>.flex.items-center>.flex.items-center>span>.w-7.text-xs");
     let dropletShopNodes = document.querySelectorAll(".btn.btn-xl.btn-primary.relative.mt-3.h-10");
     if(valueMissing(dropletShopNodes, true) && !updateQueued) {
         try { [0,1].forEach(i => dropletShopNodes[i].addEventListener("click", ()=>setTimeout(unsafeWindow.updateChargeData, 3500))); } catch {} // "+5 Max. Charges" and "+30 Charges" buttons;
