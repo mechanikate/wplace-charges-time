@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         max charges time
 // @namespace    https://github.com/mechanikate/wplace-charges-time
-// @version      1.3.1
+// @version      1.3.2
 // @description  adds a timer counting down to when you will have max charges above the Paint button for wplace
 // @license      MIT
 // @author       mechanikate
@@ -63,6 +63,7 @@ unsafeWindow.updateChargeData=()=>{
 setInterval(() => { // just an interval because I don't feel like making this more complex
     let plainChargeNode = document.querySelector(".btn.btn-primary.btn-lg>.flex.items-center>.flex.items-center>span>.w-7.text-xs");
     let dropletShopNodes = document.querySelectorAll(".btn.btn-xl.btn-primary.relative.mt-3.h-10");
+    if(!plainChargeNode || ! dropletShopNodes) return;
     if(valueMissing(dropletShopNodes, true) && !updateQueued) {
         try { [0,1].forEach(i => dropletShopNodes[i].addEventListener("click", ()=>setTimeout(unsafeWindow.updateChargeData, 3500))); } catch {} // "+5 Max. Charges" and "+30 Charges" buttons;
     }
