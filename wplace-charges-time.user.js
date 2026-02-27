@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         max charges time
 // @namespace    https://github.com/mechanikate/wplace-charges-time
-// @version      1.3.0
+// @version      1.3.1
 // @description  adds a timer counting down to when you will have max charges above the Paint button for wplace
 // @license      MIT
 // @author       mechanikate
@@ -88,7 +88,6 @@ setInterval(() => { // just an interval because I don't feel like making this mo
     });
     const parentNodes = [document.querySelector(".btn.btn-primary.btn-lg.relative.z-30"), document.querySelector(".absolute.bottom-0.left-0.z-50.w-full > .rounded-t-box.bg-base-100.border-base-300.w-full.border-t.py-3 > .relative.px-3 > .mt-3.mb-4")];
     existingEles.forEach((existingEle,i) => {
-        console.log(existingEle);
         if(typeof(existingEle) == "undefined" || existingEle == null) {
             if(parentNodes[i] === null) return;
             return parentNodes[i].parentElement.insertBefore(newSpans[i], parentNodes[i]);
